@@ -27,7 +27,6 @@ Or install it yourself as:
 * Rails integration
 * Usage
 * Configuration
-* Support other Rubies
 
 ## Contributing
 
