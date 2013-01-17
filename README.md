@@ -20,7 +20,7 @@ Or install it yourself as:
 
     use Elasticsearch::Paramedic::Rack
 
-## Todo's
+## Todos
 
 * Authlogic
 * Tests
