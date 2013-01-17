@@ -1,3 +1,4 @@
+require "rubygems"
 require "elasticsearch-paramedic-rack"
 
 class RackApp
