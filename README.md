@@ -18,15 +18,17 @@ Or install it yourself as:
 
 ## Usage
 
-    use Elasticsearch::Paramedic::Rack
+    use Elasticsearch::Paramedic::Rack::Middelware
 
 ## Todos
 
 * Authlogic
 * Tests
 * Rails integration
+* Proxy to MongoDB to use on remote Server
 * Usage
 * Configuration
+* debug options / logger
 
 ## Contributing
 
