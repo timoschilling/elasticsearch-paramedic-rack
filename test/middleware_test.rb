@@ -3,13 +3,13 @@ require 'minitest/autorun'
 require 'rack/lint'
 require 'rack/mock'
 
-require "elasticsearch-paramedic-rack/middelware"
+require "elasticsearch-paramedic-rack/middleware"
 
 class MiddlewareTest < Minitest::Unit::TestCase
   PATH = "/elasticsearch-paramedic"
 
   def middelware
-    Rack::Lint.new Elasticsearch::Paramedic::Rack::Middelware.new(RackApp.new)
+    Rack::Lint.new Elasticsearch::Paramedic::Rack::Middleware.new(RackApp.new)
   end
 
   def test_root
