@@ -9,9 +9,10 @@ module Elasticsearch
         end
 
         def call env
-          if env["PATH_INFO"] =~ %r"^/elasticsearch-paramedic$"
+          case env["PATH_INFO"]
+          when "/elasticsearch-paramedic"
             return [302, {"Location" => "/elasticsearch-paramedic/", "Content-Type" => "text/plain"}, []]
-          elsif env["PATH_INFO"] == "/elasticsearch-paramedic/"
+          when "/elasticsearch-paramedic/"
             env["PATH_INFO"] = "/elasticsearch-paramedic/index.html"
           end
 
