@@ -18,13 +18,18 @@ Or install it yourself as:
 
 ## Usage
 
+### Rails
+
+    everything is done by default
+
+### Rack
+
     use Elasticsearch::Paramedic::Rack::Middleware
 
 ## Todos
 
 * Authlogic
 * Tests
-* Rails integration
 * Proxy to MongoDB to use on remote Server
 * Usage
 * Configuration
