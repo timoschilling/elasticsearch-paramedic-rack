@@ -16,9 +16,13 @@ Or install it yourself as:
 
     $ gem install elasticsearch-paramedic-rack
 
-## Usage
+## Config
 
     use Elasticsearch::Paramedic::Rack::Middleware
+
+## Usage
+
+    Visit `http://host:port/elasticsearch-paramedic`, for example `http://localhost:3000/elasticsearch-paramedic`
 
 ## Todos
 
@@ -26,7 +30,6 @@ Or install it yourself as:
 * Tests
 * Rails integration
 * Proxy to MongoDB to use on remote Server
-* Usage
 * Configuration
 * debug options / logger
 
