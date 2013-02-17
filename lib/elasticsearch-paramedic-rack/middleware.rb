@@ -3,7 +3,7 @@ require "rack/static"
 module Elasticsearch
   module Paramedic
     module Rack
-      class Middelware < ::Rack::Static
+      class Middleware < ::Rack::Static
         def initialize app
           super app, :root => Elasticsearch::Paramedic::Rack::ROOT, :urls => ["/elasticsearch-paramedic"]
         end

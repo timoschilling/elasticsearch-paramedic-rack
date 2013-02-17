@@ -1,5 +1,5 @@
 require "elasticsearch-paramedic-rack/version"
-require "elasticsearch-paramedic-rack/middelware"
+require "elasticsearch-paramedic-rack/middleware"
 
 module Elasticsearch
   module Paramedic

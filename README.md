@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-    use Elasticsearch::Paramedic::Rack::Middelware
+    use Elasticsearch::Paramedic::Rack::Middleware
 
 ## Todos
 
