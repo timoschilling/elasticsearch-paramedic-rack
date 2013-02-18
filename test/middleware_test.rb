@@ -15,7 +15,7 @@ class MiddlewareTest < Minitest::Unit::TestCase
   def test_root
     res = Rack::MockRequest.new(middelware).get(PATH)
     assert_equal 302, res.status
-    assert_equal "/elasticsearch-paramedic/", res.header["Location"]
+    assert_equal "#{PATH}/", res.header["Location"]
   end
 
   def test_root2
