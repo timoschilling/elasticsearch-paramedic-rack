@@ -29,7 +29,7 @@ Or install it yourself as:
 * Authlogic
 * Tests
 * Rails integration
-* Proxy to MongoDB to use on remote Server
+* Proxy to Elasticsearch to use on remote Server
 * Configuration
 * debug options / logger
 
