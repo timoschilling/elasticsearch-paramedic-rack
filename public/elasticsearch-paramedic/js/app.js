@@ -12,8 +12,9 @@ var App = Em.Application.create({
   },
 
   elasticsearch_url: function() {
-    var location = window.location
-    return (/_plugin/.test(location.href.toString())) ? location.protocol + "//" + location.host : "http://localhost:9200"
+    var href = window.location.href.toString()
+    
+    return /_plugin/.test(href) ? href.substring(0, href.indexOf('/_plugin/')) : "http://localhost:9200"
   }(),
 
   refresh_intervals : Ember.ArrayController.create({
@@ -94,6 +95,7 @@ App.cluster = Ember.Object.create({
 });
 
 App.nodes = Ember.ArrayController.create({
+  hidden: false,
   content: [],
 
   contains: function(item) {
@@ -101,6 +103,8 @@ App.nodes = Ember.ArrayController.create({
   },
 
   refresh: function() {
+    if (App.nodes.hidden) { return }
+
     clearTimeout(App.nodes.poller)
     setTimeout(function() { App.set("refreshing", false) }, 1000)
     App.nodes.poller = setTimeout( function() { App.nodes.__perform_refresh() }, App.refresh_interval.value )
@@ -152,12 +156,13 @@ App.nodes = Ember.ArrayController.create({
     };
 
     App.set("refreshing", true)
-    $.getJSON(App.elasticsearch_url+"/_cluster/nodes?jvm", __load_nodes_info);
-    $.getJSON(App.elasticsearch_url+"/_cluster/nodes/stats?indices&os&process&jvm", __load_nodes_stats);
+    $.getJSON(App.elasticsearch_url+"/_nodes?jvm", __load_nodes_info);
+    $.getJSON(App.elasticsearch_url+"/_nodes/stats?indices&os&process&jvm", __load_nodes_stats);
   }
 });
 
 App.indices = Ember.ArrayController.create({
+  hidden: false,
   content: [],
 
   contains: function(item) {
@@ -165,6 +170,8 @@ App.indices = Ember.ArrayController.create({
   },
 
   refresh: function() {
+    if (App.indices.hidden) { return }
+
     clearTimeout(App.indices.poller)
     setTimeout(function() { App.set("refreshing", false) }, 1000)
     App.indices.poller = setTimeout( function() { App.indices.__perform_refresh() }, App.refresh_interval.value )
@@ -330,17 +337,19 @@ App.indices = Ember.ArrayController.create({
       App.cluster.set("docs_count",
                       data._all.primaries.docs ? data._all.primaries.docs.count : 0)
 
-      for (var index_name in data._all.indices) {
+      var indices = data._all.indices || data.indices
+
+      for (var index_name in indices) {
         var index = self.findProperty("name", index_name)
         if (!index) continue
 
         index
-          .set("size", data._all.indices[index_name]['primaries']['store']['size'])
-          .set("size_in_bytes", data._all.indices[index_name]['primaries']['store']['size_in_bytes'])
-          .set("docs", data._all.indices[index_name]['primaries']['docs']['count'])
-          .set("indexing", data._all.indices[index_name]['primaries']['indexing'])
-          .set("search", data._all.indices[index_name]['primaries']['search'])
-          .set("get", data._all.indices[index_name]['primaries']['get'])
+          .set("size", indices[index_name]['primaries']['store']['size'])
+          .set("size_in_bytes", indices[index_name]['primaries']['store']['size_in_bytes'])
+          .set("docs", indices[index_name]['primaries']['docs']['count'])
+          .set("indexing", indices[index_name]['primaries']['indexing'])
+          .set("search", indices[index_name]['primaries']['search'])
+          .set("get", indices[index_name]['primaries']['get'])
       }
     };
 
@@ -413,6 +422,30 @@ App.toggleChart = Ember.View.create({
 
     this.set("text", visible ? 'Show' : 'Hide')
     visible ? chart.hide('fast') : chart.show('fast')
+    App.nodes.refresh();
+  }
+});
+
+App.toggleIndices = Ember.View.create({
+  hidden: false,
+  text:   'Hide',
+
+  toggle: function(event) {
+    this.set("text", this.get('hidden') ? 'Hide' : 'Show')
+    this.toggleProperty('hidden')
+    App.indices.toggleProperty('hidden')
+    App.indices.refresh();
+  }
+});
+
+App.toggleNodes = Ember.View.create({
+  hidden: false,
+  text:   'Hide',
+
+  toggle: function(event) {
+    this.set("text", this.get('hidden') ? 'Hide' : 'Show')
+    this.toggleProperty('hidden')
+    App.nodes.toggleProperty('hidden')
   }
 });
 
